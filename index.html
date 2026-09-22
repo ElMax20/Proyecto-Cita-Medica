@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma Integral de Gestión y Atención Médica | SaaS Médico Multisede</title>
+  <meta name="description" content="Prototipo UI/UX para atención médica multisede: reservas para pacientes, portal móvil para médico itinerante con rutas protegidas, y conciliación contable de los viernes.">
+
+  <!-- Hojas de Estilo del Sistema de Diseño -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/patient.css">
+  <link rel="stylesheet" href="css/doctor.css">
+  <link rel="stylesheet" href="css/accountant.css">
+  <link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+  <!-- Barra Superior Global de Control (Herramientas de Demostración UI/UX) -->
+  <header class="prototype-toolbar">
+    <div class="toolbar-brand">
+      <div class="brand-icon-box">⚕️</div>
+      <span>SaaS Médico Multisede</span>
+      <span class="brand-badge">Medicina General</span>
+    </div>
+
+    <div class="toolbar-controls">
+      <!-- Selector de Dispositivo: Escritorio vs Xiaomi Redmi Note (390px) -->
+      <div class="device-toggle-group">
+        <button type="button" class="device-btn active" id="btn-mode-desktop" title="Vista estándar para consultorios y contabilidad">
+          💻 Modo Escritorio
+        </button>
+        <button type="button" class="device-btn" id="btn-mode-mobile" title="Simulador táctil Xiaomi Redmi Note (390x844px)">
+          📱 Modo Xiaomi Redmi Note
+        </button>
+      </div>
+
+      <!-- Conmutador Rápido de Roles para Pruebas -->
+      <button type="button" class="btn-ghost-sm" id="btn-quick-switch-role" title="Alternar entre Médico, Paciente y Contadora">
+        🔄 Alternar Rol Demo
+      </button>
+
+      <!-- Información del Usuario Activo -->
+      <div class="toolbar-user" id="toolbar-user-group" style="display: none;">
+        <img src="" alt="Avatar" class="toolbar-avatar" id="toolbar-user-avatar" />
+        <span id="toolbar-user-name" style="font-weight: 700;">Usuario</span>
+        <span class="brand-badge" id="toolbar-role-badge">ROL</span>
+        <button type="button" class="btn-ghost-sm" id="btn-logout" title="Cerrar sesión">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Envoltorio del Dispositivo (Viewport) -->
+  <main class="device-viewport-wrapper">
+    <div class="device-container mode-desktop" id="main-device-container">
+      <div class="app-screen-content" id="main-screen-content">
+
+        <!-- ================================================================
+             VISTA 0: LANDING PAGE & LOGIN CENTRAL MULTI-ROL (Página 1)
+             ================================================================ -->
+        <section id="view-landing" class="landing-wrapper">
+          <!-- Cabecera Institucional -->
+          <div class="landing-header">
+            <div class="landing-brand">
+              <div class="brand-icon-large">🩺</div>
+              <div class="brand-title-group">
+                <h1>Clínica Integral & Red Médica</h1>
+                <div class="brand-specialty-tag">
+                  <span>●</span> Servicio Oficial de Medicina General
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn-header-action" id="btn-landing-quick-booking">
+              📅 Consulta Directa de Turno
+            </button>
+          </div>
+
+          <!-- Contenido Principal -->
+          <div class="landing-main-grid">
+            <!-- Hero Informativo -->
+            <div class="hero-content">
+              <div class="hero-pill-badge">
+                <span class="hero-pulse-dot"></span>
+                <span>Prototipo UI/UX v1 • Sistema Multisede</span>
+              </div>
+              <h2 class="hero-headline">
+                Plataforma Integral de <span>Gestión y Atención</span> Médica
+              </h2>
+              <p class="hero-description">
+                Solución unificada que conecta en tiempo real a pacientes, médicos itinerantes en ruta y auditoría contable. Garantiza traslados interurbanos seguros sin cruces de horario y conciliaciones de viernes automatizadas.
+              </p>
+
+              <div class="hero-features-list">
+                <div class="hero-feature-item">
+                  <span class="icon">🏥</span>
+                  <span>4 Sedes: Ceibos, Alborada, Mapasingue y Hospital</span>
+                </div>
+                <div class="hero-feature-item">
+                  <span class="icon">🚗</span>
+                  <span>Protección de Franjas de Traslado en Ruta</span>
+                </div>
+                <div class="hero-feature-item">
+                  <span class="icon">💊</span>
+                  <span>Recetario Digital con Código MSP Oficial</span>
+                </div>
+                <div class="hero-feature-item">
+                  <span class="icon">📊</span>
+                  <span>Corte de Caja y Liquidación Tributaria SRI</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tarjeta de Login Unificado -->
+            <div class="login-card-container">
+              <div class="login-card-header">
+                <h3 class="login-card-title">Portal de Acceso Unificado</h3>
+                <p class="login-card-subtitle">Selecciona tu perfil profesional o de atención para ingresar</p>
+              </div>
+
+              <!-- Selector de Perfil Segmentado (Pill Switcher) -->
+              <div class="role-segmented-pill" id="login-role-switcher">
+                <button type="button" class="role-tab-btn active" data-role="doctor">
+                  <span class="tab-icon">👨‍⚕️</span>
+                  <span>Médico Titular</span>
+                </button>
+                <button type="button" class="role-tab-btn" data-role="paciente">
+                  <span class="tab-icon">🧑‍💼</span>
+                  <span>Paciente</span>
+                </button>
+                <button type="button" class="role-tab-btn" data-role="contador">
+                  <span class="tab-icon">📊</span>
+                  <span>Contadora</span>
+                </button>
+              </div>
+
+              <!-- Formulario de Inicio de Sesión -->
+              <form class="login-form" id="unified-login-form">
+                <div class="form-group">
+                  <label class="form-label" for="login-username">Correo Electrónico o Cédula de Identidad</label>
+                  <div class="input-with-icon">
+                    <span class="input-icon-left">👤</span>
+                    <input type="text" class="form-input" id="login-username" placeholder="Cédula (0928374651) o usuario (doctor)" required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="login-password">Clave de Acceso</label>
+                  <div class="input-with-icon">
+                    <span class="input-icon-left">🔒</span>
+                    <input type="password" class="form-input" id="login-password" placeholder="Ingresa tu clave de acceso" required />
+                    <button type="button" class="password-toggle-btn" id="btn-toggle-password" title="Ver contraseña">👁️</button>
+                  </div>
+                </div>
+
+                <div class="form-options-row">
+                  <label class="remember-checkbox-label">
+                    <input type="checkbox" id="login-remember" checked />
+                    <span>Recordar sesión en este equipo</span>
+                  </label>
+                  <a href="#" class="forgot-password-link" onclick="alert('Instrucciones de recuperación enviadas a su correo formal.'); return false;">¿Olvidó su clave?</a>
+                </div>
+
+                <button type="submit" class="btn-primary btn-login-submit">
+                  <span>Ingresar a la Plataforma</span> →
+                </button>
+              </form>
+
+              <!-- Acceso Rápido por Código QR para Pacientes -->
+              <div class="qr-quick-access-box" id="qr-quick-access-btn" title="Haz clic para simular el escaneo de tu tarjeta de paciente física">
+                <div class="qr-quick-info">
+                  <span class="qr-quick-icon">📷</span>
+                  <div class="qr-quick-text">
+                    Acceso Rápido por Código QR
+                    <small>Escanear tarjeta médica física de paciente</small>
+                  </div>
+                </div>
+                <span class="badge-sede badge-alborada" style="font-size: 0.7rem;">SIMULAR QR</span>
+              </div>
+
+              <!-- Insignias de Confianza -->
+              <div class="trust-badges-container">
+                <div class="trust-badge-ssl">
+                  <span>🔒</span> Cifrado SSL 256-bit y segregación de roles de grado hospitalario
+                </div>
+                <div class="trust-disclaimer-emergency">
+                  * En caso de riesgo vital inmediato, no reserve en línea; acuda a la sala de emergencias del Hospital Público Ceibos.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barra de Acceso Rápido Demo (Página 1) -->
+          <div class="demo-access-bar">
+            <div class="demo-bar-title">
+              <span>⚡ Modo Demostración Rápida:</span>
+              <span style="font-weight: 400; font-size: 0.78rem;">Relleno automático de credenciales con 1 clic</span>
+            </div>
+            <div class="demo-buttons-group">
+              <button type="button" class="btn-demo-autofill doc" id="btn-demo-doctor">
+                👨‍⚕️ Rellenar como Médico (Dr. Salazar)
+              </button>
+              <button type="button" class="btn-demo-autofill pat" id="btn-demo-patient">
+                🧑‍💼 Rellenar como Paciente (C. Mendoza)
+              </button>
+              <button type="button" class="btn-demo-autofill acc" id="btn-demo-accountant">
+                📊 Rellenar como Contadora (Lcda. Morales)
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VISTA 1: PORTAL DE CITAS DEL PACIENTE (Página 3 - Flujo 4 Pasos)
+             ================================================================ -->
+        <section id="view-patient" class="patient-portal-wrapper" style="display: none;">
+          <!-- Cabecera -->
+          <div class="patient-portal-header">
+            <div class="patient-header-left">
+              <span style="font-size: 1.6rem;">📅</span>
+              <div class="patient-header-title">
+                <h2>Reserva de Cita - Medicina General</h2>
+                <p>Agendamiento ágil multisede sin registro engorroso</p>
+              </div>
+            </div>
+            <button type="button" class="btn-secondary btn-patient-exit" onclick="store.setCurrentUser(null)">
+              ← Volver al Inicio
+            </button>
+          </div>
+
+          <!-- Stepper de Progreso (4 Pasos) -->
+          <div class="wizard-stepper-container">
+            <div class="wizard-stepper">
+              <div class="step-item active" data-step="1">
+                <div class="step-circle">1</div>
+                <span class="step-label">Elección de Sede</span>
+              </div>
+              <div class="step-item" data-step="2">
+                <div class="step-circle">2</div>
+                <span class="step-label">Fecha y Hora</span>
+              </div>
+              <div class="step-item" data-step="3">
+                <div class="step-circle">3</div>
+                <span class="step-label">Datos y Pago</span>
+              </div>
+              <div class="step-item" data-step="4">
+                <div class="step-circle">4</div>
+                <span class="step-label">Ticket y QR</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contenido de los Pasos -->
+          <div class="wizard-step-content">
+            <!-- Aclaratoria de Medicina General -->
+            <div class="general-medicine-notice">
+              <span style="font-size: 1.2rem;">ℹ️</span>
+              <span><strong>Aviso de Especialidad:</strong> La atención médica provista en todas las sedes corresponde exclusivamente a <strong>Medicina General y Consulta Primaria</strong> para evitar confusiones de especialidad.</span>
+            </div>
+
+            <!-- PASO 1: Elección de Sede -->
+            <div class="wizard-step-pane" data-step="1">
+              <div class="step-section-header">
+                <h3 class="step-section-title">Paso 1: Selecciona la Sede de tu Preferencia</h3>
+                <p class="step-section-desc">Elige entre nuestras clínicas privadas y centros con tarifas fijas transparentes.</p>
+              </div>
+              <div class="clinic-cards-grid" id="clinics-cards-container">
+                <!-- Se llena dinámicamente desde patient.js -->
+              </div>
+            </div>
+
+            <!-- PASO 2: Fecha y Hora -->
+            <div class="wizard-step-pane" data-step="2" style="display: none;">
+              <div class="step-section-header">
+                <h3 class="step-section-title">Paso 2: Selecciona Fecha y Horario Disponible</h3>
+                <p class="step-section-desc">Los horarios reservan bloques de 30 a 45 minutos. Los traslados en carretera están protegidos automáticamente.</p>
+              </div>
+
+              <div class="datetime-picker-layout">
+                <!-- Calendario Mensual -->
+                <div class="calendar-card">
+                  <div class="calendar-nav-header">
+                    <span class="calendar-current-month">Septiembre 2026</span>
+                    <span class="badge-sede badge-ceibos">Días Hábiles</span>
+                  </div>
+                  <div class="calendar-grid-days">
+                    <div class="calendar-day-name">D</div>
+                    <div class="calendar-day-name">L</div>
+                    <div class="calendar-day-name">M</div>
+                    <div class="calendar-day-name">X</div>
+                    <div class="calendar-day-name">J</div>
+                    <div class="calendar-day-name">V</div>
+                    <div class="calendar-day-name">S</div>
+                  </div>
+                  <div class="calendar-grid-days" id="calendar-days-grid" style="margin-top: 6px;">
+                    <!-- Se llena desde patient.js -->
+                  </div>
+                </div>
+
+                <!-- Rejilla de Horas -->
+                <div class="time-slots-card">
+                  <div class="time-slots-subtitle">Horarios Disponibles para Consulta:</div>
+                  <div class="slots-pill-grid" id="time-slots-grid">
+                    <!-- Se llena desde patient.js -->
+                  </div>
+                  <div class="travel-warning-slot-notice" id="travel-buffer-notice">
+                    <!-- Advertencia de buffer -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PASO 3: Datos del Paciente y Método de Pago -->
+            <div class="wizard-step-pane" data-step="3" style="display: none;">
+              <div class="step-section-header">
+                <h3 class="step-section-title">Paso 3: Datos Personales y Método de Pago</h3>
+                <p class="step-section-desc">Desglose transparente del recargo bancario del 9.75% por tarjeta antes de finalizar.</p>
+              </div>
+
+              <div class="patient-checkout-grid">
+                <!-- Formulario -->
+                <div class="patient-info-form-card">
+                  <h4 style="font-size: 0.98rem; font-weight: 800; color: var(--dark-navy);">Datos del Paciente</h4>
+                  <div class="form-group">
+                    <label class="form-label" for="pat-input-id">Cédula de Identidad *</label>
+                    <input type="text" class="form-input" id="pat-input-id" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pat-input-name">Nombre y Apellido Completo *</label>
+                    <input type="text" class="form-input" id="pat-input-name" required />
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                      <label class="form-label" for="pat-input-phone">Teléfono / Celular *</label>
+                      <input type="tel" class="form-input" id="pat-input-phone" required />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="pat-input-email">Correo Electrónico *</label>
+                      <input type="email" class="form-input" id="pat-input-email" required />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="pat-input-reason">Motivo Principal de la Consulta</label>
+                    <input type="text" class="form-input" id="pat-input-reason" placeholder="ej. Chequeo de rutina, malestar gripal, dolor de espalda..." />
+                  </div>
+
+                  <h4 style="font-size: 0.98rem; font-weight: 800; color: var(--dark-navy); margin-top: 10px;">Selecciona tu Método de Pago</h4>
+                  <div class="payment-methods-selector">
+                    <label class="payment-method-option selected" data-method="efectivo">
+                      <input type="radio" name="payment_method" value="efectivo" checked />
+                      <div class="method-details">
+                        <span class="method-title">💵 Efectivo o Transferencia Bancaria Directa</span>
+                        <span class="method-subtitle">Pago en caja de recepción al llegar. Sin recargo adicional.</span>
+                      </div>
+                    </label>
+
+                    <label class="payment-method-option" data-method="tarjeta">
+                      <input type="radio" name="payment_method" value="tarjeta" />
+                      <div class="method-details">
+                        <span class="method-title">💳 Tarjeta de Crédito / Débito en Recepción</span>
+                        <span class="method-subtitle">Aplica recargo bancario legal del <strong>+9.75%</strong> por procesamiento digital.</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Resumen Financiero Transparente (Página 3) -->
+                <div class="order-summary-card">
+                  <h4 class="order-summary-title">Resumen Transparente de Reserva</h4>
+                  <div class="summary-row">
+                    <span>Sede Médica:</span>
+                    <strong id="sum-clinic-name" style="color: var(--dark-navy);">Clínica Ceibos</strong>
+                  </div>
+                  <div class="summary-row">
+                    <span>Fecha y Hora:</span>
+                    <span id="sum-date-time">19 Septiembre - 10:30</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Especialidad:</span>
+                    <span>Medicina General</span>
+                  </div>
+                  <div class="summary-row bold">
+                    <span>Tarifa Base de Consulta:</span>
+                    <span id="sum-base-fee">$20.00</span>
+                  </div>
+                  <div class="summary-row" id="sum-card-fee-row" style="display: none; color: #b45309;">
+                    <span>
+                      Recargo Bancario Tarjeta <span class="transparent-fee-badge">+9.75%</span>:
+                    </span>
+                    <strong id="sum-card-fee-amount">+$1.95</strong>
+                  </div>
+                  <div class="summary-row total-due">
+                    <span>Total a Pagar en Recepción:</span>
+                    <span class="amount" id="sum-total-due">$20.00</span>
+                  </div>
+                  <p style="font-size: 0.74rem; color: var(--text-subtle); line-height: 1.3;">
+                    El comprobante digital con código QR oficial se emitirá al confirmar. No requiere pagos por adelantado en la web.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PASO 4: Ticket y Confirmación (Página 3) -->
+            <div class="wizard-step-pane" data-step="4" style="display: none;">
+              <div class="confirmation-container">
+                <div class="confirmation-success-badge">
+                  <span>✓</span> ¡Cita Médica Reservada Exitosamente!
+                </div>
+
+                <!-- Tarjeta Imprimible del Ticket -->
+                <div class="ticket-card-printable" id="printable-ticket-element">
+                  <div class="ticket-header">
+                    <div>
+                      <h3 style="font-size: 1.15rem; color: var(--dark-navy); font-weight: 800;">TICKET OFICIAL DE CITA</h3>
+                      <p style="font-size: 0.74rem; color: var(--text-muted);">Servicio de Medicina General - Dr. Fernando Salazar</p>
+                    </div>
+                    <div class="ticket-code-group">
+                      <div class="ticket-code-label">Código de Cita</div>
+                      <div class="ticket-code-value" id="ticket-code-display">#MED-84920</div>
+                    </div>
+                  </div>
+
+                  <!-- Código QR Dinámico -->
+                  <div class="qr-code-display-box" id="ticket-qr-container">
+                    <!-- Código SVG inyectado desde qr-generator.js -->
+                  </div>
+
+                  <div class="ticket-details-grid">
+                    <div class="ticket-detail-item">
+                      <div class="label">Paciente</div>
+                      <div class="value" id="ticket-patient-name">Carlos Mendoza Moreira</div>
+                    </div>
+                    <div class="ticket-detail-item">
+                      <div class="label">Cédula de Identidad</div>
+                      <div class="value" id="ticket-patient-id">0987654321</div>
+                    </div>
+                    <div class="ticket-detail-item">
+                      <div class="label">Sede / Consultorio</div>
+                      <div class="value" id="ticket-clinic-display">Clínica Ceibos (Consultorio 2)</div>
+                    </div>
+                    <div class="ticket-detail-item">
+                      <div class="label">Fecha y Hora Asignada</div>
+                      <div class="value" id="ticket-datetime-display">2026-09-19 - 10:30</div>
+                    </div>
+                    <div class="ticket-detail-item">
+                      <div class="label">Método de Pago</div>
+                      <div class="value" id="ticket-method-display">Efectivo</div>
+                    </div>
+                    <div class="ticket-detail-item">
+                      <div class="label">Total a Abonar</div>
+                      <div class="value" id="ticket-total-display" style="color: var(--primary-blue); font-size: 1.05rem;">$20.00</div>
+                    </div>
+                  </div>
+
+                  <p style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.3;">
+                    📧 Hemos enviado la confirmación oficial con copia al correo del paciente y a la agenda del doctor. Se activará una alerta 24h antes de su turno.
+                  </p>
+
+                  <div class="ticket-actions-group">
+                    <button type="button" class="btn-primary" id="btn-print-ticket">
+                      🖨️ Descargar Comprobante PDF / Imprimir
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de Navegación del Wizard -->
+            <div class="wizard-actions-bar">
+              <button type="button" class="btn-secondary" id="wizard-btn-prev" style="visibility: hidden;">
+                ← Paso Anterior
+              </button>
+              <button type="button" class="btn-primary" id="wizard-btn-next">
+                Continuar Siguiente Paso →
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             VISTA 2: PORTAL MÉDICO (MOBILE-FIRST / REDMI NOTE 390x844px)
+             Página 4 del documento
+             ================================================================ -->
+        <section id="view-doctor" class="doctor-portal-wrapper" style="display: none;">
+          <!-- Barra Superior Móvil Ergonómica -->
+          <div class="doctor-top-bar">
+            <div class="doctor-top-row">
+              <div class="doctor-profile-chip">
+                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80" alt="Doctor" class="doctor-avatar-circle" />
+                <div class="doctor-info-text">
+                  <span class="doctor-name-title">Dr. Fernando Salazar</span>
+                  <span class="doctor-code-sub">MSP: MSP-REG-84729 • Medicina General</span>
+                </div>
+              </div>
+              <span class="active-clinic-pill">📍 Ceibos - Cons. 2</span>
+            </div>
+
+            <div class="doctor-date-navigation">
+              <button type="button" class="date-nav-arrow" title="Día anterior">◀</button>
+              <span class="date-display-label">📅 Sábado, 19 Septiembre 2026</span>
+              <button type="button" class="date-nav-arrow" title="Día siguiente">▶</button>
+            </div>
+          </div>
+
+          <!-- Banner Alerta de Guardia Activa -->
+          <div class="emergency-active-banner" id="doctor-emergency-active-banner" style="display: none;">
+            <div class="emergency-banner-text">
+              <h4>🚨 Guardia Hospitalaria Activa</h4>
+              <p>Convocatoria en Hospital Ceibos. Las citas privadas han sido resguardadas.</p>
+            </div>
+            <button type="button" class="btn-secondary" style="font-size: 0.72rem; padding: 4px 8px;" onclick="document.getElementById('emergency-guard-modal').classList.add('active')">
+              Ver Gestión
+            </button>
+          </div>
+
+          <!-- Contenido de las Pestañas Móviles -->
+          <div class="doctor-tab-content">
+            <!-- PESTAÑA 1: Agenda (Timeline de Pacientes y Rutas Protegidas) -->
+            <div class="doctor-pane-view" data-pane="agenda" style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 0.82rem; font-weight: 700; color: #475569;">CRONOGRAMA SECUENCIAL Y TRASLADOS:</span>
+                <span class="badge-sede badge-ceibos">5 Citas</span>
+              </div>
+              <div class="timeline-container" id="doctor-timeline-list">
+                <!-- Se llena desde doctor.js -->
+              </div>
+            </div>
+
+            <!-- PESTAÑA 2: Fichas Clínicas Rápidas -->
+            <div class="doctor-pane-view" data-pane="fichas" style="display: none; flex-direction: column; gap: 12px;">
+              <div class="search-bar-sticky">
+                <input type="text" class="form-input" id="search-patient-records" placeholder="🔍 Buscar paciente por cédula o apellido..." />
+              </div>
+              <div class="clinical-records-list" id="medical-records-list">
+                <!-- Se llena desde doctor.js -->
+              </div>
+            </div>
+
+            <!-- PESTAÑA 3: Emisión de Recetas Digitales -->
+            <div class="doctor-pane-view" data-pane="recetas" style="display: none; flex-direction: column; gap: 12px;">
+              <div class="prescription-form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h4 style="font-size: 1rem; font-weight: 800; color: var(--dark-navy);">Nueva Receta Digital</h4>
+                  <span class="badge-sede badge-mapasingue">MSP-REG-84729</span>
+                </div>
+                <form id="doctor-prescription-form" style="display: flex; flex-direction: column; gap: 12px;">
+                  <div class="form-group">
+                    <label class="form-label">Seleccionar Paciente</label>
+                    <select class="form-input" id="rx-select-patient" required></select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Diagnóstico Clínico (CIE-10)</label>
+                    <input type="text" class="form-input" id="rx-diagnosis-input" placeholder="ej. Faringoamigdalitis Aguda, HTA Primaria" value="Faringitis Aguda Estreptocócica (J02.0)" required />
+                  </div>
+
+                  <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                      <label class="form-label">Medicamentos y Posología</label>
+                      <button type="button" class="btn-ghost-sm" id="btn-add-rx-drug">+ Agregar Fármaco</button>
+                    </div>
+                    <div id="rx-drug-items-list" style="display: flex; flex-direction: column; gap: 8px;">
+                      <div class="rx-med-item-row">
+                        <input type="text" class="form-input rx-drug-name" placeholder="Medicamento" value="Amoxicilina + Ácido Clavulánico 875/125mg" required />
+                        <input type="text" class="form-input rx-drug-dose" placeholder="Dosis" value="1 tableta cada 12 horas por 7 días vía oral" required />
+                      </div>
+                      <div class="rx-med-item-row">
+                        <input type="text" class="form-input rx-drug-name" placeholder="Medicamento" value="Ibuprofeno 400mg" required />
+                        <input type="text" class="form-input rx-drug-dose" placeholder="Dosis" value="1 tableta cada 8 horas si hay dolor o fiebre" required />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Indicaciones y Cuidados</label>
+                    <textarea class="form-input" id="rx-indications-input" rows="2" placeholder="Reposo relativo, hidratación abundante, control en 5 días si persiste fiebre.">Reposo relativo por 48 horas. Hidratación abundante. Control en consultorio si no hay mejoría.</textarea>
+                  </div>
+
+                  <button type="submit" class="btn-primary" style="margin-top: 6px;">
+                    📝 Generar Receta Oficial PDF
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- PESTAÑA 4: Registro Ultrarrápido de Gastos en 2 Toques (Página 4) -->
+            <div class="doctor-pane-view" data-pane="gastos" style="display: none; flex-direction: column; gap: 14px;">
+              <div class="quick-expenses-grid">
+                <div class="quick-expense-presets-label">⚡ REGISTRO RÁPIDO EN 2 TOQUES (PRESETS):</div>
+                <div class="expense-preset-buttons">
+                  <button type="button" class="btn-expense-preset" id="btn-preset-taxi">
+                    <span class="preset-icon">🚕</span>
+                    <span class="preset-name">Taxi Ruta</span>
+                    <span class="preset-price">$4.00</span>
+                  </button>
+                  <button type="button" class="btn-expense-preset" id="btn-preset-gas">
+                    <span class="preset-icon">⛽</span>
+                    <span class="preset-name">Gasolina</span>
+                    <span class="preset-price">$15.00</span>
+                  </button>
+                  <button type="button" class="btn-expense-preset" id="btn-preset-hospital">
+                    <span class="preset-icon">🏥</span>
+                    <span class="preset-name">Insumos Hosp.</span>
+                    <span class="preset-price">$12.00</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Registro Manual de Otros Gastos -->
+              <div class="prescription-form-card">
+                <h5 style="font-size: 0.88rem; font-weight: 700; color: var(--dark-navy);">Otro Gasto Operativo</h5>
+                <form id="custom-expense-form" style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="number" step="0.5" class="form-input" id="custom-exp-amount" placeholder="Monto ($)" required />
+                    <select class="form-input" id="custom-exp-cat">
+                      <option value="Transporte">Transporte</option>
+                      <option value="Suministros Hospital">Suministros Hospital</option>
+                      <option value="Mantenimiento">Mantenimiento</option>
+                      <option value="Activos">Activos</option>
+                    </select>
+                  </div>
+                  <input type="text" class="form-input" id="custom-exp-desc" placeholder="Concepto (ej. Peajes Vía a la Costa)" required />
+                  <button type="submit" class="btn-secondary" style="padding: 8px;">+ Guardar para Contadora</button>
+                </form>
+              </div>
+
+              <!-- Historial Reciente de Gastos -->
+              <div class="expense-log-history">
+                <span style="font-size: 0.78rem; font-weight: 700; color: #475569;">GASTOS REGISTRADOS HOY:</span>
+                <div id="doctor-expenses-history-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón Flotante Rojo de Guardia de Emergencia (Página 4) -->
+          <button type="button" class="doctor-emergency-fab" id="btn-emergency-guard-fab" title="Activar guardia imprevista y reagendar citas asistidas">
+            <span class="fab-pulse-ring"></span>
+            <span>🚨 Cubrir Guardia</span>
+          </button>
+
+          <!-- Barra de Navegación Inferior Móvil (Bottom Bar de 4 Iconos) -->
+          <nav class="doctor-bottom-nav">
+            <button type="button" class="bottom-nav-item active" data-tab="agenda">
+              <span class="nav-icon">📅</span>
+              <span>Agenda</span>
+            </button>
+            <button type="button" class="bottom-nav-item" data-tab="fichas">
+              <span class="nav-icon">📁</span>
+              <span>Fichas</span>
+            </button>
+            <button type="button" class="bottom-nav-item" data-tab="recetas">
+              <span class="nav-icon">💊</span>
+              <span>Recetas</span>
+            </button>
+            <button type="button" class="bottom-nav-item" data-tab="gastos">
+              <span class="nav-icon">💰</span>
+              <span>Gastos</span>
+            </button>
+          </nav>
+        </section>
+
+        <!-- ================================================================
+             VISTA 3: PANEL ADMINISTRATIVO DE LA CONTADORA (Página 5)
+             ================================================================ -->
+        <section id="view-accountant" class="accountant-portal-wrapper" style="display: none;">
+          <!-- Cabecera -->
+          <div class="accountant-header">
+            <div class="accountant-title-group">
+              <h2>Panel Administrativo & Conciliación Fiscal</h2>
+              <p>Auditoría de liquidaciones de los viernes, porcentajes por clínica y preparación para declaración SRI</p>
+            </div>
+            <div class="accountant-action-tools">
+              <button type="button" class="btn-secondary" id="btn-download-csv">
+                📊 Descargar CSV / Excel
+              </button>
+              <button type="button" class="btn-primary" id="btn-export-tax-report">
+                📄 Exportar Informe Tributario SRI
+              </button>
+            </div>
+          </div>
+
+          <!-- Fila de Métricas KPI (4 tarjetas) (Página 5) -->
+          <div class="kpi-metrics-grid">
+            <!-- KPI 1: Ingresos Brutos -->
+            <div class="kpi-card gross">
+              <div class="kpi-label-row">
+                <span class="kpi-label">Ingresos Brutos Facturados</span>
+                <span class="kpi-icon-badge">💵</span>
+              </div>
+              <div class="kpi-amount" id="kpi-gross-revenue">$80.00</div>
+              <div class="kpi-subtext">Citas atendidas en consultorios privados</div>
+            </div>
+
+            <!-- KPI 2: Retenciones por Clínicas -->
+            <div class="kpi-card retentions">
+              <div class="kpi-label-row">
+                <span class="kpi-label">Retenciones por Sedes</span>
+                <span class="kpi-icon-badge">📉</span>
+              </div>
+              <div class="kpi-amount" id="kpi-retentions-total" style="color: #6366f1;">-$12.00</div>
+              <div class="kpi-subtext">Mapasingue (5%), Ceibos (25%), Alborada (10%)</div>
+            </div>
+
+            <!-- KPI 3: Gastos Operativos Acumulados -->
+            <div class="kpi-card expenses">
+              <div class="kpi-label-row">
+                <span class="kpi-label">Gastos Operativos en Ruta</span>
+                <span class="kpi-icon-badge">⛽</span>
+              </div>
+              <div class="kpi-amount" id="kpi-expenses-total" style="color: #f59e0b;">-$74.50</div>
+              <div class="kpi-subtext">Transporte, taxis e insumos asumidos en hospital</div>
+            </div>
+
+            <!-- KPI 4: Ingreso Neto Real -->
+            <div class="kpi-card net">
+              <div class="kpi-label-row">
+                <span class="kpi-label">Ingreso Neto Real del Doctor</span>
+                <span class="kpi-icon-badge">💰</span>
+              </div>
+              <div class="kpi-amount" id="kpi-net-income" style="color: #10b981;">$1,193.50</div>
+              <div class="kpi-subtext">(Bruto - Retenciones) + Sueldo Hospital - Gastos</div>
+            </div>
+          </div>
+
+          <!-- Cuerpo del Dashboard Contable -->
+          <div class="accountant-dashboard-body">
+            <div class="accountant-split-grid">
+              <!-- MÓDULO 1: Liquidación de los Viernes (Tabla de Corte de Caja) -->
+              <div class="accounting-card">
+                <div class="accounting-card-header">
+                  <div>
+                    <h3 class="card-heading-title">Liquidación de los Viernes (Corte Automático)</h3>
+                    <p class="card-heading-desc">Agrupación por clínica, cálculo de comisiones retenidas y neto a pagar al médico</p>
+                  </div>
+                  <span class="badge-sede badge-alborada">Cierre de Semana Activo</span>
+                </div>
+
+                <div class="settlement-table-wrapper">
+                  <table class="settlement-table">
+                    <thead>
+                      <tr>
+                        <th>Sede / Consultorio</th>
+                        <th>Pacientes</th>
+                        <th>Facturado</th>
+                        <th>Retención Clínica</th>
+                        <th>Neto a Transferir</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="friday-settlement-table-body">
+                      <!-- Se llena desde accountant.js -->
+                    </tbody>
+                  </table>
+                </div>
+
+                <div style="background: #f8fafc; border-radius: 8px; padding: 12px; font-size: 0.78rem; color: #64748b;">
+                  💡 <strong>Tip de Auditoría:</strong> Puedes hacer clic sobre las etiquetas de estado (<em>Liquidado / Pendiente</em>) para conmutar la confirmación de transferencia interbancaria semanal.
+                </div>
+              </div>
+
+              <!-- MÓDULO 2: Rentabilidad Real por Sede y Clasificador de Egresos -->
+              <div style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- Rentabilidad Comparativa -->
+                <div class="accounting-card">
+                  <div class="accounting-card-header">
+                    <div>
+                      <h4 class="card-heading-title">Rentabilidad Real por Sede</h4>
+                      <p class="card-heading-desc">Margen neto generado por cada consultorio</p>
+                    </div>
+                  </div>
+                  <div class="clinic-profitability-list" id="clinic-profitability-container">
+                    <!-- Se llena desde accountant.js -->
+                  </div>
+                </div>
+
+                <!-- Clasificador Contable de Egresos -->
+                <div class="accounting-card">
+                  <div class="accounting-card-header">
+                    <div>
+                      <h4 class="card-heading-title">Clasificador Contable de Egresos</h4>
+                      <p class="card-heading-desc">Gastos catalogados para deducción tributaria SRI</p>
+                    </div>
+                  </div>
+                  <div class="expense-category-chips" id="expense-categories-grid">
+                    <!-- Se llena desde accountant.js -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================================================================
+       MODALES DEL SISTEMA
+       ================================================================ -->
+
+  <!-- Modal 1: Botón de Guardia y Emergencia Médica (Página 4) -->
+  <div class="modal-overlay" id="emergency-guard-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.3rem;">🚨</span>
+          <h3 class="modal-title" style="color: #991b1b;">Convocatoria de Guardia Hospitalaria</h3>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-emergency-modal">✕</button>
+      </div>
+      <p style="font-size: 0.82rem; color: #475569; margin-bottom: 14px; line-height: 1.4;">
+        Se ha activado la guardia imprevista en el Hospital Público Ceibos. El siguiente asistente permite notificar y reagendar automáticamente a los pacientes con citas coincidentes el día de hoy:
+      </p>
+
+      <div id="emergency-affected-list" style="display: flex; flex-direction: column; gap: 10px; max-height: 340px; overflow-y: auto;">
+        <!-- Inyectado desde doctor.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Detalle de Ficha Clínica del Paciente (Página 4) -->
+  <div class="modal-overlay" id="patient-detail-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Ficha Clínica y Antecedentes</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-patient-detail">✕</button>
+      </div>
+      <div id="patient-detail-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Receta Médica Oficial Emitida (Página 4) -->
+  <div class="modal-overlay" id="prescription-success-modal">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Receta Médica Digital Emitida</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-prescription-modal">✕</button>
+      </div>
+      <div id="prescription-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Informe Tributario SRI Formal (Página 5) -->
+  <div class="modal-overlay" id="tax-report-modal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Informe Tributario de Liquidación SRI</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-tax-modal">✕</button>
+      </div>
+      <div id="tax-report-modal-body"></div>
+      <div style="display: flex; gap: 10px; margin-top: 16px;">
+        <button type="button" class="btn-primary" style="flex: 1;" onclick="window.print()">🖨️ Imprimir Formulario SRI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raíz de Notificaciones Toast -->
+  <div class="toast-container" id="toast-notifications-root"></div>
+
+  <!-- Script Principal de la Aplicación -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

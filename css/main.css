@@ -1,0 +1,500 @@
+/* ==========================================================================
+   SaaS Médico Multisede - Sistema de Diseño y Estilos Globales
+   Paleta cromática funcional y directrices de UI/UX (Página 2 del documento)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Paleta cromática clínica funcional oficial */
+  --primary-blue: #0284c7;       /* Azul Clínico Principal (Sky Blue) */
+  --primary-blue-hover: #0369a1;
+  --primary-blue-light: #e0f2fe;
+  
+  --dark-navy: #0f172a;          /* Azul Marino Oscuro (Slate Dark) */
+  --dark-navy-muted: #334155;
+  --navy-border: #1e293b;
+
+  --emerald-green: #10b981;      /* Verde Éxito / Alborada */
+  --emerald-green-light: #d1fae5;
+  --emerald-green-dark: #047857;
+
+  --indigo-ceibos: #6366f1;      /* Índigo Ceibos */
+  --indigo-ceibos-light: #e0e7ff;
+  --indigo-ceibos-dark: #4338ca;
+
+  --amber-transit: #f59e0b;      /* Naranja Hospital / Traslado */
+  --amber-transit-light: #fef3c7;
+  --amber-transit-dark: #b45309;
+
+  --red-emergency: #ef4444;      /* Rojo Guardia / Cancelado */
+  --red-emergency-light: #fee2e2;
+  --red-emergency-dark: #b91c1c;
+
+  /* Neutros & Fondos */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-input: #f8fafc;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-subtle: #94a3b8;
+  --border-light: #e2e8f0;
+  --border-focus: #38bdf8;
+
+  /* Sombras y Elevaciones */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-colored: 0 10px 20px -5px rgba(2, 132, 199, 0.25);
+
+  /* Radios */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transiciones */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset y Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background-color: #0b1120; /* Fondo envolvente oscuro moderno para destacar la pantalla */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Barra Superior Global de Control (Herramientas de Prototipo) */
+.prototype-toolbar {
+  background: #0f172a;
+  border-bottom: 1px solid #1e293b;
+  color: #f8fafc;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(12px);
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.brand-icon-box {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--primary-blue), #38bdf8);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.brand-badge {
+  background: rgba(2, 132, 199, 0.25);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.device-toggle-group {
+  display: inline-flex;
+  background: #1e293b;
+  padding: 3px;
+  border-radius: var(--radius-full);
+  border: 1px solid #334155;
+}
+
+.device-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.device-btn:hover {
+  color: #ffffff;
+}
+
+.device-btn.active {
+  background: var(--primary-blue);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.4);
+}
+
+.toolbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px solid #334155;
+}
+
+.toolbar-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 1.5px solid #38bdf8;
+}
+
+.btn-ghost-sm {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-ghost-sm:hover {
+  background: #1e293b;
+  color: #ffffff;
+  border-color: #475569;
+}
+
+/* Contenedor del Dispositivo (Modo Móvil Xiaomi Redmi Note vs Modo Escritorio) */
+.device-viewport-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 45px);
+  padding: 20px;
+  background: #0f172a;
+  transition: padding var(--transition-normal);
+}
+
+/* Modo Escritorio: ancho completo fluido */
+.device-container.mode-desktop {
+  width: 100%;
+  max-width: 1380px;
+  background: var(--bg-app);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  min-height: 860px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modo Móvil: Xiaomi Redmi Note (390 x 844px exactos como especifica el documento) */
+.device-container.mode-mobile {
+  width: 390px;
+  min-width: 390px;
+  height: 844px;
+  background: var(--bg-app);
+  border-radius: 46px;
+  box-shadow: 0 0 0 10px #1e293b, 0 0 0 12px #334155, 0 25px 60px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border: 3px solid #0f172a;
+}
+
+/* Mockup de muesca/altavoz Xiaomi */
+.device-container.mode-mobile::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 24px;
+  background: #0f172a;
+  border-radius: 20px;
+  z-index: 999;
+}
+
+.app-screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-app);
+  position: relative;
+}
+
+/* Estilo de la barra de scroll */
+.app-screen-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.app-screen-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-screen-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.app-screen-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Badges de Sedes Oficiales (Página 2) */
+.badge-sede {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.badge-mapasingue {
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+}
+
+.badge-ceibos {
+  background: var(--indigo-ceibos-light);
+  color: var(--indigo-ceibos-dark);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.badge-alborada {
+  background: var(--emerald-green-light);
+  color: var(--emerald-green-dark);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.badge-hospital {
+  background: var(--amber-transit-light);
+  color: var(--amber-transit-dark);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-emergency {
+  background: var(--red-emergency-light);
+  color: var(--red-emergency-dark);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Botones Principales con Estética Premium */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-blue), #0284c7);
+  color: #ffffff;
+  border: none;
+  padding: 12px 22px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-normal);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0369a1, #0284c7);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--dark-navy);
+  border: 1px solid var(--border-light);
+  padding: 11px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--red-emergency), #dc2626);
+  color: #ffffff;
+  border: none;
+  padding: 11px 20px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  transition: var(--transition-normal);
+}
+
+.btn-danger:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+/* Modales */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+  padding: 16px;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-light);
+  transform: scale(0.95) translateY(10px);
+  transition: all var(--transition-normal);
+  padding: 24px;
+}
+
+.modal-overlay.active .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark-navy);
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close-btn:hover {
+  color: var(--dark-navy);
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 3000;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  border-left: 4px solid var(--primary-blue);
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+}
+
+.toast.success { border-left-color: var(--emerald-green); }
+.toast.danger { border-left-color: var(--red-emergency); }
+.toast.warning { border-left-color: var(--amber-transit); }
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
