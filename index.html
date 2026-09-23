@@ -560,7 +560,14 @@
                       <label class="form-label" for="login-password">Clave de Acceso</label>
                       <div class="input-with-icon">
                         <input type="password" class="form-input" id="login-password" placeholder="Ingresa tu clave de acceso" required />
-                        <button type="button" class="password-toggle-btn" id="btn-toggle-password" title="Ver contraseña">👁️</button>
+                        <button type="button" class="password-toggle-btn" id="btn-toggle-password" title="Mostrar contraseña (hacer visible)" aria-label="Mostrar u ocultar contraseña">
+                          <svg class="eye-svg eye-slashed" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path>
+                            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path>
+                            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path>
+                            <line x1="2" y1="2" x2="22" y2="22"></line>
+                          </svg>
+                        </button>
                       </div>
                     </div>
 
@@ -926,6 +933,50 @@
              Página 4 del documento
              ================================================================ -->
         <section id="view-doctor" class="doctor-portal-wrapper" style="display: none;">
+          <!-- Barra de Navegación Móvil Principal del Doctor (Adaptada y Organizada para Celular 390px) -->
+          <div class="doctor-mobile-nav-container">
+            <!-- Fila de Perfil y Guardia en Móvil -->
+            <div class="doctor-mobile-profile-bar">
+              <div class="doctor-mobile-profile-info">
+                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80" alt="Dr. Carlos Campoverde" class="doctor-mobile-avatar" />
+                <div class="doctor-mobile-meta">
+                  <div class="doctor-mobile-name">
+                    <span>Dr. Carlos Campoverde</span>
+                    <span class="brand-badge badge-ceibos">MÉDICO</span>
+                  </div>
+                  <div class="doctor-mobile-clinic-tag">
+                    <span>📍 Ceibos (Cons. 2)</span>
+                    <span class="bullet-sep">•</span>
+                    <span>5 Citas Hoy</span>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn-mobile-emergency-trigger" id="btn-mobile-quick-guard" title="Gestionar Convocatoria de Guardia">
+                <span>🚨 Guardia</span>
+              </button>
+            </div>
+
+            <!-- Menú Principal Segmentado en Celular (4 Pestañas Táctiles Ergonómicas) -->
+            <nav class="doctor-mobile-tab-pills" id="doctor-mobile-pills" aria-label="Menú principal del doctor">
+              <button type="button" class="doc-mobile-pill active" data-tab="agenda" id="pill-doc-agenda">
+                <span class="pill-icon">📅</span>
+                <span class="pill-text">Agenda</span>
+              </button>
+              <button type="button" class="doc-mobile-pill" data-tab="fichas" id="pill-doc-fichas">
+                <span class="pill-icon">📁</span>
+                <span class="pill-text">Fichas</span>
+              </button>
+              <button type="button" class="doc-mobile-pill" data-tab="recetas" id="pill-doc-recetas">
+                <span class="pill-icon">💊</span>
+                <span class="pill-text">Recetas</span>
+              </button>
+              <button type="button" class="doc-mobile-pill" data-tab="gastos" id="pill-doc-gastos">
+                <span class="pill-icon">💰</span>
+                <span class="pill-text">Gastos</span>
+              </button>
+            </nav>
+          </div>
+
           <!-- Banner Alerta de Guardia Activa -->
           <div class="emergency-active-banner" id="doctor-emergency-active-banner" style="display: none;">
             <div class="emergency-banner-text">
@@ -1285,7 +1336,7 @@
   <!-- Raíz de Notificaciones Toast -->
   <div class="toast-container" id="toast-notifications-root"></div>
 
-  <!-- Script Principal de la Aplicación -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Script Principal de la Aplicación (Compatible con file:/// y http://) -->
+  <script src="js/app.bundle.js"></script>
 </body>
 </html>

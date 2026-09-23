@@ -12,12 +12,15 @@ export function setupDoctorPortal(showToast) {
   let activeDoctorTab = 'agenda'; // 'agenda', 'fichas', 'recetas', 'gastos'
   let activeDate = '2026-09-19';  // Sábado, 19 Septiembre 2026
 
-  // Elementos de la barra de navegación (Móvil y Navbar Superior)
+  // Elementos de la barra de navegación (Móvil, Pestañas Superiores y Bottom Nav)
   const bottomNavButtons = document.querySelectorAll('.doctor-bottom-nav .bottom-nav-item');
+  const mobilePillButtons = document.querySelectorAll('.doc-mobile-pill');
+  const desktopNavButtons = document.querySelectorAll('#nav-menu-doctor .nav-tab-btn');
   const doctorPanes = document.querySelectorAll('.doctor-pane-view');
 
   // Botones de guardia y modales
   const btnEmergencyFab = document.getElementById('btn-emergency-guard-fab');
+  const btnMobileQuickGuard = document.getElementById('btn-mobile-quick-guard');
   const emergencyModal = document.getElementById('emergency-guard-modal');
   const btnCloseEmergencyModal = document.getElementById('btn-close-emergency-modal');
   const emergencyActionsList = document.getElementById('emergency-affected-list');
@@ -27,13 +30,18 @@ export function setupDoctorPortal(showToast) {
   function switchDoctorTab(tabKey) {
     activeDoctorTab = tabKey;
 
-    // Actualizar botones móviles
+    // Actualizar botones de la barra inferior móvil
     bottomNavButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tab === activeDoctorTab);
     });
 
+    // Actualizar botones del menú móvil segmentado superior
+    mobilePillButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === activeDoctorTab);
+    });
+
     // Actualizar botones de la barra de navegación superior dinámica
-    document.querySelectorAll('#nav-menu-doctor .nav-tab-btn').forEach(btn => {
+    desktopNavButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.tab === activeDoctorTab);
     });
 
@@ -57,10 +65,21 @@ export function setupDoctorPortal(showToast) {
     btn.addEventListener('click', () => switchDoctorTab(btn.dataset.tab));
   });
 
-  // Conectar botones de la barra de navegación superior dinámica
-  document.querySelectorAll('#nav-menu-doctor .nav-tab-btn').forEach(btn => {
+  mobilePillButtons.forEach(btn => {
     btn.addEventListener('click', () => switchDoctorTab(btn.dataset.tab));
   });
+
+  // Conectar botones de la barra de navegación superior dinámica
+  desktopNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => switchDoctorTab(btn.dataset.tab));
+  });
+
+  // Conectar botón rápido de guardia en la cabecera móvil
+  if (btnMobileQuickGuard) {
+    btnMobileQuickGuard.addEventListener('click', () => {
+      if (emergencyModal) emergencyModal.classList.add('active');
+    });
+  }
 
   // --- 1. CRONOGRAMA DIARIO & RUTAS (Timeline Vertical) ---
   function renderTimeline() {
@@ -558,6 +577,17 @@ export function setupDoctorPortal(showToast) {
     }
   }
 
-  // Inicializar vista de cronograma inicial
-  renderTimeline();
+  // Escuchar cuando el médico entra a su portal o cambia el estado para renderizar
+  store.subscribe((state) => {
+    if (state.activeView === 'doctor') {
+      switchDoctorTab(activeDoctorTab);
+    }
+  });
+
+  // Inicializar vista de cronograma inicial si ya está en vista doctor
+  if (store.getActiveView() === 'doctor') {
+    switchDoctorTab('agenda');
+  } else {
+    renderTimeline();
+  }
 }

@@ -71,7 +71,9 @@ export const DEMO_USERS = {
     email: 'carlos.campoverde@montepiedrasalud.ec',
     username: 'doctor',
     idNumber: '0930860044',
+    alternativeId: '0928374651',
     password: 'admin123',
+    alternativePassword: 'doctor123',
     specialty: 'Medicina General',
     mspCode: 'MSP-REG-84729',
     avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80'

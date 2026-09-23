@@ -510,7 +510,8 @@ html, body {
   .navbar-user-name {
     display: none;
   }
-  .navbar-menu-view#nav-menu-landing {
+  .navbar-menu-view#nav-menu-landing,
+  .navbar-menu-view#nav-menu-doctor {
     display: none !important;
   }
   .nav-step-btn, .nav-tab-btn {
@@ -518,8 +519,15 @@ html, body {
     font-size: 0.7rem;
   }
   .btn-navbar-sri, .btn-navbar-emergency, .btn-navbar-booking, .btn-navbar-back, .btn-navbar-outline {
-    font-size: 0.72rem;
-    padding: 5px 10px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  #nav-actions-doctor {
+    gap: 6px;
+  }
+  #btn-nav-doctor-guard-btn {
+    padding: 4px 8px;
+    font-size: 0.68rem;
   }
   .responsive-container {
     padding: 0 12px;

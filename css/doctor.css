@@ -547,20 +547,163 @@
   border-bottom: none;
 }
 
+/* ==========================================================================
+   Menú Móvil Principal del Doctor - Adaptación Ergonómica para Celular (390x844px)
+   ========================================================================== */
+
+.doctor-mobile-nav-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: 12px 14px;
+  margin: 12px 12px 6px 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+}
+
+.doctor-mobile-profile-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.doctor-mobile-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doctor-mobile-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary-blue);
+  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
+}
+
+.doctor-mobile-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doctor-mobile-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--dark-navy);
+}
+
+.doctor-mobile-clinic-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.bullet-sep {
+  color: #cbd5e1;
+}
+
+.btn-mobile-emergency-trigger {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #b91c1c;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 5px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-mobile-emergency-trigger:hover,
+.btn-mobile-emergency-trigger:active {
+  background: #fca5a5;
+  transform: scale(0.97);
+}
+
+/* Grid de 4 Pestañas Segmentadas en Celular */
+.doctor-mobile-tab-pills {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.doc-mobile-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 2px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.doc-mobile-pill .pill-icon {
+  font-size: 1.15rem;
+  transition: transform 0.2s ease;
+}
+
+.doc-mobile-pill:hover {
+  color: var(--dark-navy);
+}
+
+.doc-mobile-pill.active {
+  background: #ffffff;
+  color: var(--primary-blue);
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.doc-mobile-pill.active .pill-icon {
+  transform: scale(1.12);
+}
+
+.doc-mobile-pill.active .pill-text {
+  font-weight: 800;
+}
+
 /* Barra de Navegación Inferior Móvil (Bottom Bar de 4 Iconos) */
 .doctor-bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  background: #ffffff;
-  border-top: 1px solid var(--border-light);
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
-  box-shadow: 0 -4px 15px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
   z-index: 80;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .bottom-nav-item {
@@ -570,40 +713,46 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   height: 100%;
   transition: var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav-item .nav-icon {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease;
 }
 
 .bottom-nav-item.active {
   color: var(--primary-blue);
+  font-weight: 800;
 }
 
 .bottom-nav-item.active .nav-icon {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.1);
 }
 
 /* ==========================================================================
    Adaptación Responsiva por Breakpoints (Tablet & Desktop)
    ========================================================================== */
 
-@media (min-width: 768px) {
-  .doctor-desktop-nav {
-    display: flex;
+@media (min-width: 769px) {
+  .doctor-mobile-nav-container {
+    display: none !important;
   }
   .doctor-bottom-nav {
     display: none !important;
   }
   .doctor-emergency-fab {
     display: none !important;
+  }
+  .doctor-desktop-nav {
+    display: flex;
   }
   .doctor-tab-content {
     padding: 24px 24px 48px 24px;
@@ -651,14 +800,26 @@
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
+  .doctor-portal-wrapper {
+    padding-bottom: 70px;
+  }
+  .doctor-tab-content {
+    padding: 8px 12px 85px 12px;
+  }
   .doctor-emergency-fab {
     position: fixed;
-    bottom: 76px;
-    right: 16px;
+    bottom: 74px;
+    right: 14px;
     z-index: 90;
+    padding: 9px 14px;
+    font-size: 0.74rem;
   }
   .btn-emergency-desktop {
     display: none !important;
+  }
+  .timeline-card {
+    padding: 12px 14px;
+    gap: 10px;
   }
 }

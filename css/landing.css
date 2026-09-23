@@ -734,12 +734,39 @@
 
 .password-toggle-btn {
   position: absolute;
-  right: 12px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--text-subtle);
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  z-index: 2;
+}
+
+.password-toggle-btn:hover {
+  color: var(--primary-blue);
+  background: rgba(2, 132, 199, 0.08);
+}
+
+.password-toggle-btn .eye-svg {
+  display: block;
+  stroke: currentColor;
+  transition: transform var(--transition-fast);
+}
+
+.password-toggle-btn:hover .eye-svg {
+  transform: scale(1.1);
+}
+
+.password-toggle-btn:active .eye-svg {
+  transform: scale(0.92);
 }
 
 .form-options-row {
