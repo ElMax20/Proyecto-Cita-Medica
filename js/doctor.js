@@ -12,38 +12,54 @@ export function setupDoctorPortal(showToast) {
   let activeDoctorTab = 'agenda'; // 'agenda', 'fichas', 'recetas', 'gastos'
   let activeDate = '2026-09-19';  // Sábado, 19 Septiembre 2026
 
-  // Elementos de la barra inferior (Bottom Bar)
+  // Elementos de la barra de navegación (Móvil y Navbar Superior)
   const bottomNavButtons = document.querySelectorAll('.doctor-bottom-nav .bottom-nav-item');
   const doctorPanes = document.querySelectorAll('.doctor-pane-view');
 
-  // Botón flotante de guardia y modales
+  // Botones de guardia y modales
   const btnEmergencyFab = document.getElementById('btn-emergency-guard-fab');
   const emergencyModal = document.getElementById('emergency-guard-modal');
   const btnCloseEmergencyModal = document.getElementById('btn-close-emergency-modal');
   const emergencyActionsList = document.getElementById('emergency-affected-list');
   const emergencyBanner = document.getElementById('doctor-emergency-active-banner');
 
-  // Navegación de pestañas inferiores
-  bottomNavButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      bottomNavButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeDoctorTab = btn.dataset.tab;
+  // Navegación unificada de pestañas (Móvil y Escritorio)
+  function switchDoctorTab(tabKey) {
+    activeDoctorTab = tabKey;
 
-      doctorPanes.forEach(pane => {
-        pane.style.display = (pane.dataset.pane === activeDoctorTab) ? 'flex' : 'none';
-      });
-
-      // Ocultar FAB de emergencia si está en pestaña de recetas o gastos para que no estorbe
-      if (btnEmergencyFab) {
-        btnEmergencyFab.style.display = (activeDoctorTab === 'agenda') ? 'flex' : 'none';
-      }
-
-      if (activeDoctorTab === 'agenda') renderTimeline();
-      if (activeDoctorTab === 'fichas') renderMedicalRecords();
-      if (activeDoctorTab === 'recetas') setupPrescriptionTab();
-      if (activeDoctorTab === 'gastos') renderExpensesTab();
+    // Actualizar botones móviles
+    bottomNavButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === activeDoctorTab);
     });
+
+    // Actualizar botones de la barra de navegación superior dinámica
+    document.querySelectorAll('#nav-menu-doctor .nav-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === activeDoctorTab);
+    });
+
+    // Mostrar el panel correspondiente
+    doctorPanes.forEach(pane => {
+      pane.style.display = (pane.dataset.pane === activeDoctorTab) ? 'flex' : 'none';
+    });
+
+    // Ocultar FAB de emergencia si está en pestaña de recetas o gastos para que no estorbe en móvil
+    if (btnEmergencyFab) {
+      btnEmergencyFab.style.display = (activeDoctorTab === 'agenda') ? 'flex' : 'none';
+    }
+
+    if (activeDoctorTab === 'agenda') renderTimeline();
+    if (activeDoctorTab === 'fichas') renderMedicalRecords();
+    if (activeDoctorTab === 'recetas') setupPrescriptionTab();
+    if (activeDoctorTab === 'gastos') renderExpensesTab();
+  }
+
+  bottomNavButtons.forEach(btn => {
+    btn.addEventListener('click', () => switchDoctorTab(btn.dataset.tab));
+  });
+
+  // Conectar botones de la barra de navegación superior dinámica
+  document.querySelectorAll('#nav-menu-doctor .nav-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchDoctorTab(btn.dataset.tab));
   });
 
   // --- 1. CRONOGRAMA DIARIO & RUTAS (Timeline Vertical) ---
@@ -135,6 +151,13 @@ export function setupDoctorPortal(showToast) {
   // --- 2. BOTÓN DE GUARDIA Y REAGENDAMIENTO ASISTIDO (Página 4) ---
   if (btnEmergencyFab) {
     btnEmergencyFab.addEventListener('click', () => {
+      openEmergencyModal();
+    });
+  }
+
+  const btnNavDoctorGuard = document.getElementById('btn-nav-doctor-guard-btn');
+  if (btnNavDoctorGuard) {
+    btnNavDoctorGuard.addEventListener('click', () => {
       openEmergencyModal();
     });
   }
@@ -396,7 +419,7 @@ export function setupDoctorPortal(showToast) {
       <div class="official-rx-printable" id="printable-rx-ticket">
         <div class="rx-header">
           <div>
-            <h4 style="color: #0284c7; font-size: 1.1rem; font-weight: 800;">DR. FERNANDO SALAZAR</h4>
+            <h4 style="color: #0284c7; font-size: 1.1rem; font-weight: 800;">DR. CARLOS CAMPOVERDE</h4>
             <p style="font-size: 0.78rem; color: #64748b;">Medicina General | MSP Código: <strong>${rx.doctorCode}</strong></p>
           </div>
           <div class="rx-seal">
@@ -433,7 +456,7 @@ export function setupDoctorPortal(showToast) {
     const btnWhatsApp = document.getElementById('btn-share-whatsapp');
     if (btnWhatsApp) {
       btnWhatsApp.onclick = () => {
-        const text = encodeURIComponent(`Hola ${rx.patientName}, adjunto su receta médica oficial #${rx.code} emitida por el Dr. Fernando Salazar (MSP: ${rx.doctorCode}). Diagnóstico: ${rx.diagnosis}.`);
+        const text = encodeURIComponent(`Hola ${rx.patientName}, adjunto su receta médica oficial #${rx.code} emitida por el Dr. Carlos Campoverde (MSP: ${rx.doctorCode}). Diagnóstico: ${rx.diagnosis}.`);
         window.open(`https://api.whatsapp.com/send?phone=593987654321&text=${text}`, '_blank');
       };
     }

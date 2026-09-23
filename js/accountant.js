@@ -150,12 +150,12 @@ export function setupAccountantPortal(showToast) {
           </div>
           <div style="text-align: right; font-size: 0.8rem;">
             <strong>Período Fiscal:</strong> Septiembre 2026<br>
-            <strong>Cédula / RUC:</strong> 0928374651001
+            <strong>Cédula / RUC:</strong> 0930860044001
           </div>
         </div>
 
         <div style="font-size: 0.84rem; color: #334155; line-height: 1.5;">
-          <strong>Contribuyente:</strong> DR. FERNANDO SALAZAR<br>
+          <strong>Contribuyente:</strong> DR. CARLOS CAMPOVERDE<br>
           <strong>Actividad:</strong> Servicios de Medicina General en Clínicas Privadas y Sector Público.
         </div>
 

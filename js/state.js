@@ -3,7 +3,7 @@
  * Mantiene la persistencia en LocalStorage y sincroniza eventos entre Paciente, Médico y Contadora.
  */
 
-const STORAGE_KEY = 'saas_medico_multisede_v1';
+const STORAGE_KEY = 'saas_medico_multisede_v2';
 
 // Catálogo de Sedes y Reglas Financieras (Página 2, 3 y 5)
 export const CLINICS = {
@@ -67,11 +67,11 @@ export const CREDIT_CARD_SURCHARGE_RATE = 0.0975; // 9.75%
 export const DEMO_USERS = {
   doctor: {
     role: 'doctor',
-    name: 'Dr. Fernando Salazar (Itinerante)',
-    email: 'doctor@saasmedico.com',
+    name: 'Dr. Carlos Campoverde',
+    email: 'carlos.campoverde@montepiedrasalud.ec',
     username: 'doctor',
-    idNumber: '0928374651',
-    password: 'doctor123',
+    idNumber: '0930860044',
+    password: 'admin123',
     specialty: 'Medicina General',
     mspCode: 'MSP-REG-84729',
     avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80'
@@ -103,7 +103,6 @@ export const DEMO_USERS = {
 const INITIAL_STATE = {
   currentUser: null,
   activeView: 'landing', // 'landing', 'patient', 'doctor', 'accountant'
-  viewMode: 'desktop',   // 'desktop' o 'mobile' (simulador Redmi Note)
   
   // Citas Iniciales del día Sábado 19 de Septiembre y semana activa
   appointments: [
@@ -306,7 +305,7 @@ const INITIAL_STATE = {
       code: 'REC-2026-0901',
       patientName: 'Carlos Mendoza Moreira',
       patientId: '0987654321',
-      doctorName: 'Dr. Fernando Salazar',
+      doctorName: 'Dr. Carlos Campoverde',
       doctorCode: 'MSP-REG-84729',
       date: '2026-09-19',
       diagnosis: 'Hipertensión Arterial Primaria (CIE-10: I10)',
@@ -443,10 +442,6 @@ class StateStore {
     return this.state.activeView;
   }
 
-  getViewMode() {
-    return this.state.viewMode;
-  }
-
   // --- Mutaciones de Autenticación & Vistas ---
   setCurrentUser(user) {
     this.state.currentUser = user;
@@ -460,11 +455,6 @@ class StateStore {
 
   setActiveView(viewName) {
     this.state.activeView = viewName;
-    this.saveState();
-  }
-
-  setViewMode(mode) {
-    this.state.viewMode = mode; // 'desktop' o 'mobile'
     this.saveState();
   }
 

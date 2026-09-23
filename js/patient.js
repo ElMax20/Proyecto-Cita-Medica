@@ -21,7 +21,7 @@ export function setupPatientPortal(showToast) {
   const btnPrev = document.getElementById('wizard-btn-prev');
   const btnNext = document.getElementById('wizard-btn-next');
 
-  // Actualizar la vista del Stepper
+  // Actualizar la vista del Stepper en la página y en la barra superior dinámica
   function updateStepView() {
     stepItems.forEach(item => {
       const stepNum = parseInt(item.dataset.step, 10);
@@ -31,6 +31,12 @@ export function setupPatientPortal(showToast) {
       } else if (stepNum < currentStep) {
         item.classList.add('completed');
       }
+    });
+
+    // Sincronizar botones de la barra de navegación superior dinámica
+    document.querySelectorAll('#nav-menu-patient .nav-step-btn').forEach(btn => {
+      const stepNum = parseInt(btn.dataset.step, 10);
+      btn.classList.toggle('active', stepNum === currentStep);
     });
 
     stepContainers.forEach(pane => {
@@ -206,7 +212,7 @@ export function setupPatientPortal(showToast) {
     });
   });
 
-  // Autorellenar formulario si el usuario actual es paciente
+  // Rellenar formulario únicamente si el usuario ya inició sesión como paciente
   function prefillPatientData() {
     const user = store.getCurrentUser();
     const idInput = document.getElementById('pat-input-id');
@@ -215,16 +221,12 @@ export function setupPatientPortal(showToast) {
     const emailInput = document.getElementById('pat-input-email');
 
     if (user && user.role === 'paciente') {
-      if (idInput) idInput.value = user.idNumber || '0987654321';
-      if (nameInput) nameInput.value = user.name || 'Carlos Mendoza Moreira';
-      if (phoneInput) phoneInput.value = user.phone || '0987654321';
-      if (emailInput) emailInput.value = user.email || 'paciente@gmail.com';
-    } else {
-      if (idInput && !idInput.value) idInput.value = '0987654321';
-      if (nameInput && !nameInput.value) nameInput.value = 'Carlos Mendoza Moreira';
-      if (phoneInput && !phoneInput.value) phoneInput.value = '0987654321';
-      if (emailInput && !emailInput.value) emailInput.value = 'paciente@gmail.com';
+      if (idInput && !idInput.value) idInput.value = user.idNumber || '';
+      if (nameInput && !nameInput.value) nameInput.value = user.name || '';
+      if (phoneInput && !phoneInput.value) phoneInput.value = user.phone || '';
+      if (emailInput && !emailInput.value) emailInput.value = user.email || '';
     }
+    // Si no ha iniciado sesión, los campos se mantienen limpios para que el usuario escriba sus datos reales
   }
 
   function updateSummaryCard() {
@@ -360,6 +362,45 @@ export function setupPatientPortal(showToast) {
         currentStep = 1;
         updateStepView();
       }
+    });
+  }
+
+  // Navegación por pasos desde los botones de la barra superior dinámica
+  document.querySelectorAll('#nav-menu-patient .nav-step-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetStep = parseInt(btn.dataset.step, 10);
+      if (targetStep === 1) {
+        currentStep = 1;
+        updateStepView();
+      } else if (targetStep === 2) {
+        currentStep = 2;
+        renderTimeSlots();
+        updateStepView();
+      } else if (targetStep === 3) {
+        if (!selectedTimeSlot) {
+          showToast('Selecciona un horario disponible antes de continuar al paso de datos.', 'warning');
+          return;
+        }
+        prefillPatientData();
+        updateSummaryCard();
+        currentStep = 3;
+        updateStepView();
+      } else if (targetStep === 4) {
+        if (createdAppointment) {
+          currentStep = 4;
+          updateStepView();
+        } else {
+          showToast('Primero completa los datos y confirma en el Paso 3 para generar tu comprobante QR.', 'info');
+        }
+      }
+    });
+  });
+
+  // Botón volver al inicio dentro de la página del portal paciente
+  const btnPatientExitInline = document.getElementById('btn-patient-exit-inline');
+  if (btnPatientExitInline) {
+    btnPatientExitInline.addEventListener('click', () => {
+      store.setActiveView('landing');
     });
   }
 

@@ -60,7 +60,7 @@ Prototipo UI/UX v1 de una plataforma médica multisede orientada a conectar en t
 
 | Rol | Usuario / Cédula | Clave | Acceso Principal |
 | :--- | :--- | :--- | :--- |
-| **Médico Titular** | `doctor` / `0928374651` | `doctor123` | Agenda, traslados, fichas, recetario PDF y guardia |
+| **Médico Titular (Dr. Carlos Campoverde)** | `doctor` / `0930860044` | `admin123` | Agenda, traslados, fichas, recetario PDF y guardia |
 | **Paciente** | `paciente` / `0987654321` | `paciente123` | Reserva en 4 pasos, ticket QR, desglose 9.75% |
 | **Contadora** | `contador` / `0912345678` | `contador123` | Liquidación de viernes, retenciones y balance SRI |
 

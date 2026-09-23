@@ -1,7 +1,8 @@
 /**
- * Controlador Principal y Router de la Aplicación (SaaS Médico Multisede)
- * Conecta los módulos de Landing, Paciente, Médico y Contadora.
- * Administra el simulador de dispositivo (Desktop vs Redmi Note 390x844px) y Toasts.
+ * Controlador Principal y Router de la Aplicación (Montepiedra Salud)
+ * Gestiona la navegación dinámica de la barra superior según la página activa
+ * (Landing Institucional, Portal Paciente, Portal Médico, Portal Contable)
+ * y garantiza la autenticación manual obligatoria.
  */
 
 import { DEMO_USERS, store } from './state.js';
@@ -45,119 +46,263 @@ export function showToast(message, type = 'info') {
 
 // Inicialización de la Aplicación
 document.addEventListener('DOMContentLoaded', () => {
-  const deviceContainer = document.getElementById('main-device-container');
-  const btnModeDesktop = document.getElementById('btn-mode-desktop');
-  const btnModeMobile = document.getElementById('btn-mode-mobile');
-
-  // Vistas de la Aplicación
+  // Vistas / Pantallas Principales
   const viewLanding = document.getElementById('view-landing');
   const viewPatient = document.getElementById('view-patient');
   const viewDoctor = document.getElementById('view-doctor');
   const viewAccountant = document.getElementById('view-accountant');
 
-  // Elementos del Toolbar Superior
-  const toolbarUserGroup = document.getElementById('toolbar-user-group');
-  const toolbarUserAvatar = document.getElementById('toolbar-user-avatar');
-  const toolbarUserName = document.getElementById('toolbar-user-name');
-  const toolbarRoleBadge = document.getElementById('toolbar-role-badge');
-  const btnLogout = document.getElementById('btn-logout');
-  const btnQuickRoleSwitcher = document.getElementById('btn-quick-switch-role');
+  // Menús Dinámicos de la Barra Superior
+  const navMenuLanding = document.getElementById('nav-menu-landing');
+  const navMenuPatient = document.getElementById('nav-menu-patient');
+  const navMenuDoctor = document.getElementById('nav-menu-doctor');
+  const navMenuAccountant = document.getElementById('nav-menu-accountant');
 
-  // Alternador de Modo de Dispositivo: Escritorio vs Xiaomi Redmi Note
-  function setDeviceMode(mode) {
-    store.setViewMode(mode);
-    if (deviceContainer) {
-      deviceContainer.className = `device-container mode-${mode}`;
-    }
-    if (btnModeDesktop && btnModeMobile) {
-      btnModeDesktop.classList.toggle('active', mode === 'desktop');
-      btnModeMobile.classList.toggle('active', mode === 'mobile');
-    }
+  // Grupos de Acciones Dinámicas de la Barra Superior
+  const navActionsLanding = document.getElementById('nav-actions-landing');
+  const navActionsPatient = document.getElementById('nav-actions-patient');
+  const navActionsDoctor = document.getElementById('nav-actions-doctor');
+  const navActionsAccountant = document.getElementById('nav-actions-accountant');
+
+  // Subtítulo del Logo en Barra Superior
+  const navbarBrandHome = document.getElementById('navbar-brand-home');
+  const navbarBrandSubtitle = document.getElementById('navbar-brand-subtitle');
+
+  // Elementos de Usuario en la Barra
+  const patientLoggedCard = document.getElementById('patient-logged-card');
+  const patNavbarAvatar = document.getElementById('pat-navbar-avatar');
+  const patNavbarName = document.getElementById('pat-navbar-name');
+  const btnNavPatientOpenLogin = document.getElementById('btn-nav-patient-open-login');
+
+  // Botones de Salir / Regreso
+  const btnNavPatientBack = document.getElementById('btn-nav-patient-back');
+  const btnPatientLogout = document.getElementById('btn-patient-logout');
+  const btnDoctorLogout = document.getElementById('btn-doctor-logout');
+  const btnAccountantLogout = document.getElementById('btn-accountant-logout');
+
+  // Navegación al hacer clic en el Brand/Logo
+  if (navbarBrandHome) {
+    navbarBrandHome.addEventListener('click', () => {
+      const activeView = store.getActiveView();
+      if (activeView !== 'landing') {
+        store.setActiveView('landing');
+      }
+    });
   }
 
-  if (btnModeDesktop) {
-    btnModeDesktop.addEventListener('click', () => setDeviceMode('desktop'));
-  }
-  if (btnModeMobile) {
-    btnModeMobile.addEventListener('click', () => setDeviceMode('mobile'));
-  }
-
-  // Renderizar Vista Activa
+  // Renderizar la Vista y la Barra Superior según el Estado Activo
   function renderActiveView() {
     const activeView = store.getActiveView();
     const currentUser = store.getCurrentUser();
 
-    // Ocultar todas las vistas
+    // 1. Ocultar todas las vistas de contenido
     if (viewLanding) viewLanding.style.display = 'none';
     if (viewPatient) viewPatient.style.display = 'none';
     if (viewDoctor) viewDoctor.style.display = 'none';
     if (viewAccountant) viewAccountant.style.display = 'none';
 
-    // Manejar toolbar de usuario autenticado
-    if (currentUser) {
-      if (toolbarUserGroup) toolbarUserGroup.style.display = 'flex';
-      if (toolbarUserName) toolbarUserName.textContent = currentUser.name.split(' ')[0];
-      if (toolbarUserAvatar) toolbarUserAvatar.src = currentUser.avatar;
-      if (toolbarRoleBadge) {
-        toolbarRoleBadge.textContent = currentUser.role.toUpperCase();
-        toolbarRoleBadge.className = `brand-badge badge-${currentUser.role === 'doctor' ? 'ceibos' : currentUser.role === 'paciente' ? 'alborada' : 'mapasingue'}`;
-      }
-    } else {
-      if (toolbarUserGroup) toolbarUserGroup.style.display = 'none';
-    }
+    // 2. Ocultar todos los menús centrales de la barra superior
+    if (navMenuLanding) navMenuLanding.style.display = 'none';
+    if (navMenuPatient) navMenuPatient.style.display = 'none';
+    if (navMenuDoctor) navMenuDoctor.style.display = 'none';
+    if (navMenuAccountant) navMenuAccountant.style.display = 'none';
 
+    // 3. Ocultar todos los grupos de acciones de la barra superior
+    if (navActionsLanding) navActionsLanding.style.display = 'none';
+    if (navActionsPatient) navActionsPatient.style.display = 'none';
+    if (navActionsDoctor) navActionsDoctor.style.display = 'none';
+    if (navActionsAccountant) navActionsAccountant.style.display = 'none';
+
+    // 4. Mostrar y configurar la barra según la página activa
     if (activeView === 'landing') {
       if (viewLanding) viewLanding.style.display = 'block';
+      if (navMenuLanding) navMenuLanding.style.display = 'flex';
+      if (navActionsLanding) navActionsLanding.style.display = 'flex';
+      if (navbarBrandSubtitle) navbarBrandSubtitle.textContent = 'Centro Médico & Red Asistencial';
+
     } else if (activeView === 'paciente' || activeView === 'patient') {
       if (viewPatient) viewPatient.style.display = 'block';
+      if (navMenuPatient) navMenuPatient.style.display = 'flex';
+      if (navActionsPatient) navActionsPatient.style.display = 'flex';
+      if (navbarBrandSubtitle) navbarBrandSubtitle.textContent = 'Portal de Pacientes & Citas';
+
+      // Estado de usuario en la barra del paciente
+      if (currentUser && currentUser.role === 'paciente') {
+        if (patientLoggedCard) patientLoggedCard.style.display = 'flex';
+        if (patNavbarName) patNavbarName.textContent = currentUser.name.split(' ')[0];
+        if (patNavbarAvatar) patNavbarAvatar.src = currentUser.avatar;
+        if (btnNavPatientOpenLogin) btnNavPatientOpenLogin.style.display = 'none';
+      } else {
+        if (patientLoggedCard) patientLoggedCard.style.display = 'none';
+        if (btnNavPatientOpenLogin) btnNavPatientOpenLogin.style.display = 'inline-flex';
+      }
+
     } else if (activeView === 'doctor') {
       if (viewDoctor) viewDoctor.style.display = 'flex';
-      // Por defecto para doctor, recomendamos la vista móvil (Xiaomi Redmi Note) si lo desea
+      if (navMenuDoctor) navMenuDoctor.style.display = 'flex';
+      if (navActionsDoctor) navActionsDoctor.style.display = 'flex';
+      if (navbarBrandSubtitle) navbarBrandSubtitle.textContent = 'Portal Médico • Dr. Carlos Campoverde';
+
     } else if (activeView === 'contador' || activeView === 'accountant') {
       if (viewAccountant) viewAccountant.style.display = 'flex';
-      // Para contadora sugerimos desktop para ver las tablas cómodamente
-      setDeviceMode('desktop');
+      if (navMenuAccountant) navMenuAccountant.style.display = 'flex';
+      if (navActionsAccountant) navActionsAccountant.style.display = 'flex';
+      if (navbarBrandSubtitle) navbarBrandSubtitle.textContent = 'Portal Contable & SRI • Lcda. Morales';
+    }
+
+    // Scroll arriba al cambiar de vista principal
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // --- BOTONES DE CIERRE DE SESIÓN Y RETORNO ---
+  if (btnNavPatientBack) {
+    btnNavPatientBack.addEventListener('click', () => {
+      store.setActiveView('landing');
+    });
+  }
+
+  if (btnPatientLogout) {
+    btnPatientLogout.addEventListener('click', () => {
+      store.setCurrentUser(null);
+      showToast('Sesión de paciente cerrada. Regresando a la página principal.', 'info');
+      renderActiveView();
+    });
+  }
+
+  if (btnNavPatientOpenLogin) {
+    btnNavPatientOpenLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      store.setActiveView('landing');
+      setTimeout(() => {
+        const portalAcceso = document.getElementById('portal-acceso');
+        if (portalAcceso) portalAcceso.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    });
+  }
+
+  if (btnDoctorLogout) {
+    btnDoctorLogout.addEventListener('click', () => {
+      store.setCurrentUser(null);
+      showToast('Sesión médica finalizada. Regresando a la página institucional.', 'info');
+      renderActiveView();
+    });
+  }
+
+  if (btnAccountantLogout) {
+    btnAccountantLogout.addEventListener('click', () => {
+      store.setCurrentUser(null);
+      showToast('Sesión contable finalizada. Regresando a la página institucional.', 'info');
+      renderActiveView();
+    });
+  }
+
+  // --- ENLACES Y BOTONES DE NAVEGACIÓN EN EL PORTAL CONTABLE ---
+  const navBtnAccKpis = document.getElementById('nav-btn-acc-kpis');
+  const navBtnAccSettlement = document.getElementById('nav-btn-acc-settlement');
+  const navBtnAccProfitability = document.getElementById('nav-btn-acc-profitability');
+  const navBtnAccTaxreport = document.getElementById('nav-btn-acc-taxreport');
+  const btnNavAccountantSri = document.getElementById('btn-nav-accountant-sri-btn');
+
+  if (navBtnAccKpis) {
+    navBtnAccKpis.addEventListener('click', () => {
+      const el = document.querySelector('.accountant-kpis-grid');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  if (navBtnAccSettlement) {
+    navBtnAccSettlement.addEventListener('click', () => {
+      const el = document.querySelector('.settlement-table-wrapper');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  if (navBtnAccProfitability) {
+    navBtnAccProfitability.addEventListener('click', () => {
+      const el = document.getElementById('clinic-profitability-container');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  function triggerSriModal() {
+    const btnExportTax = document.getElementById('btn-export-tax-report');
+    if (btnExportTax) {
+      btnExportTax.click();
     }
   }
 
-  // Botón de Cerrar Sesión
-  if (btnLogout) {
-    btnLogout.addEventListener('click', () => {
-      store.setCurrentUser(null);
-      showToast('Sesión cerrada. Regresando al portal de presentación.', 'info');
-      renderActiveView();
-    });
+  if (navBtnAccTaxreport) {
+    navBtnAccTaxreport.addEventListener('click', triggerSriModal);
   }
 
-  // Conmutador Rápido de Roles para Pruebas UI/UX
-  if (btnQuickRoleSwitcher) {
-    btnQuickRoleSwitcher.addEventListener('click', () => {
-      const active = store.getActiveView();
-      if (active === 'landing' || active === 'contador') {
-        store.setCurrentUser(DEMO_USERS.doctor);
-        setDeviceMode('mobile'); // Mostrar vista Xiaomi
-        showToast('Cambiando a rol: 👨‍⚕️ Médico Itinerante (Modo Xiaomi Redmi Note)', 'info');
-      } else if (active === 'doctor') {
-        store.setCurrentUser(DEMO_USERS.paciente);
-        showToast('Cambiando a rol: 🧑‍💼 Paciente / Reserva de Citas', 'info');
-      } else if (active === 'paciente') {
-        store.setCurrentUser(DEMO_USERS.contador);
-        setDeviceMode('desktop'); // Mostrar vista escritorio
-        showToast('Cambiando a rol: 📊 Contadora Externa / Liquidaciones', 'info');
+  if (btnNavAccountantSri) {
+    btnNavAccountantSri.addEventListener('click', triggerSriModal);
+  }
+
+  // --- FLUJO DE AGENDAMIENTO LIMPIO (Sin inicio automático de sesión) ---
+  const btnNavbarBooking = document.getElementById('btn-navbar-book-now');
+  const btnHeroBooking = document.getElementById('btn-hero-booking');
+
+  function startBookingFlow(clinicId = null) {
+    // Ingresar al portal de citas sin forzar inicio de sesión automático
+    store.setActiveView('paciente');
+    renderActiveView();
+
+    if (clinicId) {
+      setTimeout(() => {
+        const targetClinicCard = document.querySelector(`.clinic-selection-card[data-clinic-id="${clinicId}"]`);
+        if (targetClinicCard) {
+          targetClinicCard.click();
+        }
+      }, 50);
+    }
+    showToast('Ingresando al portal de reserva de citas.', 'info');
+  }
+
+  if (btnNavbarBooking) {
+    btnNavbarBooking.addEventListener('click', () => startBookingFlow());
+  }
+
+  if (btnHeroBooking) {
+    btnHeroBooking.addEventListener('click', () => startBookingFlow());
+  }
+
+  // Botones de Agendamiento Directo desde las Tarjetas de Sedes
+  document.querySelectorAll('.btn-book-clinic-direct').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const clinicId = btn.dataset.clinic;
+      startBookingFlow(clinicId);
+    });
+  });
+
+  // Acordeón Interactivo de Preguntas Frecuentes (Dudas)
+  document.querySelectorAll('.faq-item .faq-question-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parentItem = btn.closest('.faq-item');
+      if (!parentItem) return;
+
+      const wasActive = parentItem.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+
+      if (!wasActive) {
+        parentItem.classList.add('active');
       }
-      renderActiveView();
     });
-  }
+  });
 
-  // Botón de Consulta Directa de Turno en la Cabecera de la Landing
-  const btnLandingQuick = document.getElementById('btn-landing-quick-booking');
-  if (btnLandingQuick) {
-    btnLandingQuick.addEventListener('click', () => {
-      store.setCurrentUser(DEMO_USERS.paciente);
-      showToast('Ingresando como paciente para agendar turno.', 'info');
-      renderActiveView();
+  // Navegación suave para enlaces internos
+  document.querySelectorAll('.nav-menu-link, .footer-links-list a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const targetEl = document.querySelector(href);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     });
-  }
+  });
 
   // Configuración de los submódulos
   setupAuth(showToast);
@@ -180,6 +325,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Render inicial
-  setDeviceMode(store.getViewMode() || 'desktop');
   renderActiveView();
 });

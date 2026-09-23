@@ -5,9 +5,10 @@
 
 @media print {
   /* Ocultar elementos de navegación y herramientas del sistema */
-  .prototype-toolbar,
+  .app-navbar,
   .patient-portal-header,
   .doctor-top-bar,
+  .doctor-desktop-nav,
   .doctor-bottom-nav,
   .doctor-emergency-fab,
   .accountant-header,
@@ -28,23 +29,10 @@
     font-size: 11pt;
   }
 
-  .device-viewport-wrapper {
+  .app-main-layout {
     padding: 0 !important;
     background: #ffffff !important;
-  }
-
-  .device-container.mode-desktop,
-  .device-container.mode-mobile {
-    box-shadow: none !important;
-    border: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    border-radius: 0 !important;
-  }
-
-  .device-container.mode-mobile::before {
-    display: none !important;
+    min-height: auto !important;
   }
 
   /* Tarjeta de Ticket Imprimible */

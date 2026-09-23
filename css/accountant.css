@@ -169,6 +169,7 @@
 
 .settlement-table {
   width: 100%;
+  min-width: 620px;
   border-collapse: collapse;
   font-size: 0.86rem;
   text-align: left;
@@ -311,12 +312,47 @@
 @media (max-width: 1024px) {
   .kpi-metrics-grid {
     grid-template-columns: repeat(2, 1fr);
-    padding: 16px;
+    padding: 16px 20px 0 20px;
   }
   .accountant-split-grid {
     grid-template-columns: 1fr;
   }
   .accountant-dashboard-body {
-    padding: 16px;
+    padding: 16px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .accountant-header {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .accountant-action-tools {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .accountant-action-tools button {
+    flex: 1;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+    justify-content: center;
+  }
+  .kpi-metrics-grid {
+    padding: 14px 16px 0 16px;
+    gap: 12px;
+  }
+  .accountant-dashboard-body {
+    padding: 14px 16px;
+  }
+}
+
+@media (max-width: 540px) {
+  .kpi-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .expense-category-chips {
+    grid-template-columns: 1fr;
   }
 }
